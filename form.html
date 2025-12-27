@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title> RecipeChow</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- SEO -->
+<meta name="description" content="CookNest – Discover easy and delicious homemade recipes with step-by-step guides and videos.">
+<meta name="keywords" content="recipes, cooking, food, Nigerian food, homemade meals">
+
+<style>
+:root {
+  --bg: #fafafa;
+  --text: #333;
+  --card: #fff;
+  --primary: #ff7043;
+  --secondary: #ffe0d3;
+  --footer: #eee;
+}
+
+body.dark {
+  --bg: #121212;
+  --text: #eee;
+  --card: #1e1e1e;
+  --secondary: #2a2a2a;
+  --footer: #1a1a1a;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  transition: 0.3s;
+}
+
+/* HEADER */
+header {
+  background: var(--primary);
+  color: white;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+}
+
+header h1 {
+  font-size: 2rem;
+}
+
+/* DARK MODE BUTTON */
+.toggle-dark {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  background: white;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+/* SEARCH */
+.search {
+  padding: 15px;
+  text-align: center;
+}
+
+.search input {
+  width: 90%;
+  max-width: 400px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+/* CATEGORIES */
+.categories {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+
+.categories button {
+  background: var(--secondary);
+  border: none;
+  padding: 8px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.categories button.active {
+  background: var(--primary);
+  color: white;
+}
+
+/* RECIPES */
+.recipe-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.recipe-card {
+  background: var(--card);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transition: 0.3s;
+}
+
+.recipe-card:hover {
+  transform: translateY(-6px);
+}
+
+.recipe-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.recipe-content {
+  padding: 15px;
+}
+
+.category {
+  display: inline-block;
+  background: var(--secondary);
+  color: var(--primary);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  margin-bottom: 6px;
+}
+
+.meta {
+  font-size: 0.8rem;
+  margin-bottom: 8px;
+}
+
+.steps {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.steps.short {
+  max-height: 40px;
+  overflow: hidden;
+}
+
+.toggle {
+  background: none;
+  border: none;
+  color: var(--primary);
+  cursor: pointer;
+  font-size: 0.8rem;
+  margin: 6px 0;
+}
+
+.recipe-content a {
+  display: inline-block;
+  background: var(--primary);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 15px;
+  background: var(--footer);
+  font-size: 0.85rem;
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+  header h1 { font-size: 1.6rem; }
+  .toggle-dark { font-size: 0.7rem; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🍽 RecipeChow</h1>
+  <p>Discover easy & delicious recipes</p>
+  <button class="toggle-dark" onclick="toggleDark()">🌙 Dark</button>
+</header>
+
+<div class="search">
+  <input type="text" id="search" placeholder="Search recipes...">
+</div>
+
+<div class="categories" id="categoryButtons"></div>
+
+<main class="recipe-container" id="recipes"></main>
+
+<footer>
+  © 2025 RecipeChow. All rights reserved.
+</footer>
+
+<script>
+const container = document.getElementById("recipes");
+const searchInput = document.getElementById("search");
+const categoryBox = document.getElementById("categoryButtons");
+
+/* RECIPES */
+const recipes = [
+  {
+    name: "Jollof Rice",
+    category: "Rice",
+    time: "45 mins",
+    difficulty: "Medium",
+    image: "https://i.imgur.com/5KQOZQk.jpg",
+    steps: "Prepare tomato sauce, add spices, mix with rice and cook until done.",
+    youtube: "https://www.youtube.com/watch?v=HcZ5Ykz8K5w"
+  },
+   {
+    name: "Jollof Rice",
+    category: "Rice",
+    time: "45 mins",
+    difficulty: "Medium",
+    image: "https://i.imgur.com/5KQOZQk.jpg",
+    steps: "Prepare tomato sauce, add spices, mix with rice and cook until done.",
+    youtube: "https://www.youtube.com/watch?v=HcZ5Ykz8K5w"
+  },
+   {
+    name: "Jollof Rice",
+    category: "Rice",
+    time: "45 mins",
+    difficulty: "Medium",
+    image: "https://i.imgur.com/5KQOZQk.jpg",
+    steps: "Prepare tomato sauce, add spices, mix with rice and cook until done.",
+    youtube: "https://www.youtube.com/watch?v=HcZ5Ykz8K5w"
+  },
+   {
+    name: "Jollof Rice",
+    category: "Rice",
+    time: "45 mins",
+    difficulty: "Medium",
+    image: "https://i.imgur.com/5KQOZQk.jpg",
+    steps: "Prepare tomato sauce, add spices, mix with rice and cook until done.",
+    youtube: "https://www.youtube.com/watch?v=HcZ5Ykz8K5w"
+  },
+    {
+    name: "Jollof Rice",
+    category: "Rice",
+    time: "45 mins",
+    difficulty: "Medium",
+    image: "https://i.imgur.com/5KQOZQk.jpg",
+    steps: "Prepare tomato sauce, add spices, mix with rice and cook until done.",
+    youtube: "https://www.youtube.com/watch?v=HcZ5Ykz8K5w"
+  },
+  {
+    name: "Fried Eggs",
+    category: "Breakfast",
+    time: "10 mins",
+    difficulty: "Easy",
+    image: "https://i.imgur.com/Xz8ZQZ8.jpg",
+    steps: "Heat oil, crack eggs, season lightly and fry until crispy.",
+    youtube: "https://www.youtube.com/watch?v=Zz7N0e3n6Zw"
+  }
+];
+
+let activeCategory = "All";
+
+/* CATEGORIES */
+const categories = ["All", ...new Set(recipes.map(r => r.category))];
+
+categories.forEach(cat => {
+  const btn = document.createElement("button");
+  btn.textContent = cat;
+  btn.classList.toggle("active", cat === "All");
+  btn.onclick = () => {
+    activeCategory = cat;
+    document.querySelectorAll(".categories button")
+      .forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    filterRecipes();
+  };
+  categoryBox.appendChild(btn);
+});
+
+/* DISPLAY */
+function displayRecipes(data) {
+  container.innerHTML = "";
+  if (data.length === 0) {
+    container.innerHTML = "<p style='grid-column:1/-1;text-align:center;'>No recipes found 🍳</p>";
+    return;
+  }
+  data.forEach(r => {
+    container.innerHTML += `
+      <div class="recipe-card">
+        <img src="${r.image}">
+        <div class="recipe-content">
+          <span class="category">${r.category}</span>
+          <h3>${r.name}</h3>
+          <p class="meta">⏱ ${r.time} | 🔥 ${r.difficulty}</p>
+          <p class="steps short">${r.steps}</p>
+          <button class="toggle" onclick="toggleSteps(this)">Read more</button>
+          <a href="${r.youtube}" target="_blank">Watch Video ▶</a>
+        </div>
+      </div>
+    `;
+  });
+}
+
+displayRecipes(recipes);
+
+/* FILTER */
+function filterRecipes() {
+  const search = searchInput.value.toLowerCase();
+  const filtered = recipes.filter(r =>
+    (activeCategory === "All" || r.category === activeCategory) &&
+    r.name.toLowerCase().includes(search)
+  );
+  displayRecipes(filtered);
+}
+
+searchInput.addEventListener("input", filterRecipes);
+
+/* TOGGLES */
+function toggleSteps(btn) {
+  const steps = btn.previousElementSibling;
+  steps.classList.toggle("short");
+  btn.textContent = steps.classList.contains("short") ? "Read more" : "Show less";
+}
+
+function toggleDark() {
+  document.body.classList.toggle("dark");
+}
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+<link rel="icon" type="image/x-icon" href="Blue 1.png">
+
+ key: "pk_live_b43df11e368a73ac564defaf565f7a626069d107",
+
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBoxC2fwlPKFMJsn2Pcg0BqxNVKwhbKBb4",
+    authDomain: "campusmartcheckout.firebaseapp.com",
+    projectId: "campusmartcheckout",
+    storageBucket: "campusmartcheckout.firebasestorage.app",
+    messagingSenderId: "94289670706",
+    appId: "1:94289670706:web:67bc116dcbba9af41d422b"
+  };
